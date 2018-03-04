@@ -1,0 +1,9 @@
+window_x=1350
+window_y=700
+button_width=30
+entry_width=40
+search_window_x1=180
+search_window_y1=180
+search_window_x2=200
+search_window_y2=160
+max_cell_width=800
