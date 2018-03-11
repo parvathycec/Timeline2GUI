@@ -14,7 +14,11 @@ python -m pip install -e git://github.com/dmnfarrell/pandastable.git@pandastable
 
 How to run the tool?
 
-Checkout the csvtable repo. The files needed are Timeline.py, help.png, configuration.txt
+Checkout the csvtable repo. 
+The files needed are Timeline.py, help.png, configuration.txt
 All the above-mentioned files should be in one folder.
+
+Command to run the tool in command line:
+
 python Timeline.py
 
