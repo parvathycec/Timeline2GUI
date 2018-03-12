@@ -52,6 +52,12 @@ class Main(tk.Frame):
         label = tk.Label(self.master, text='Timeline Highlight')
         label.config(font=("Calibri", 16))
         label.pack(side=tk.TOP, anchor="n")
+        self.table_frame = None;
+        self.inner_fields_frame_2 = None;
+        self.inner_fields_frame_1 = None;
+        self.input_label_frame = None;
+        self.csv_data = None;
+        self.current_data = None;
         self.input_label_frame = tk.LabelFrame(self.master, text="Input Data")
         self.input_label_frame.config(font=("Calibri", 14))
         self.input_label_frame.pack(side=tk.TOP, anchor="n", fill="x", \
@@ -61,9 +67,7 @@ class Main(tk.Frame):
         self.__data_file_input = Input(self.inner_fields_frame_1, 'CSV File', action=self.select_file);
 
     def show_loading(self):
-        self.inner_fields_frame_2 = tk.Frame(self.input_label_frame);
-        self.inner_fields_frame_2.pack(side=tk.BOTTOM, fill="x")
-        self.loading_label = tk.Label(self.master, text='Loading...Please Wait..')
+        self.loading_label = tk.Label(self.master, text='Loading... Please Wait..')
         self.loading_label.config(font=("Calibri", 16))
         self.loading_label.pack(side=tk.TOP, anchor="n")
 
@@ -74,9 +78,9 @@ class Main(tk.Frame):
         """Selects a file, get data, convert to dataframe and load it to table"""
         self.__file_name = tk.filedialog.askopenfilename(initialdir=os.getcwd(), \
                                                 filetypes=(('CSV files', 'csv'),), title="Select Input CSV File.")
+        self.reset();
         self.show_loading();
         self.__data_file_input.set_data(self.__file_name)
-        self.csv_data = None
         self.master.update();
         try:
             self.csv_data = pd.read_csv(self.__file_name, low_memory=False)
@@ -98,7 +102,7 @@ class Main(tk.Frame):
                                             title="Select Input CSV File.", defaultextension='*.csv')
         print(filename);
         try:
-            self.current_data.to_csv(filename, encoding='utf-8');
+            self.current_data.to_csv(filename, index=False, encoding='utf-8');
         except Exception as e:
             tk.messagebox.showerror(message="Sorry, Could not save!");
             print(e);
@@ -107,16 +111,23 @@ class Main(tk.Frame):
 
     def reset(self):
         """Reset the data to the initial data loaded from the CSV"""
-        self.table_frame.destroy();
-        self.inner_fields_frame_2.destroy();
+        if self.table_frame is not None:
+            print('destroyed');
+            self.table_frame.destroy();
+        if self.inner_fields_frame_2 is not None:
+            self.inner_fields_frame_2.destroy();
         self.show_loading();
         self.master.update();
-        self.current_data = self.csv_data;
+        if self.csv_data is not None:
+            self.current_data = self.csv_data;
         self.hide_loading();
-        self.load_btns()
+        if self.inner_fields_frame_2 is not None:
+            self.load_btns()
 
     def load_btns(self):
         """load buttons like filter, search and query builder"""
+        self.inner_fields_frame_2 = tk.Frame(self.input_label_frame);
+        self.inner_fields_frame_2.pack(side=tk.BOTTOM, fill="x")
         filter_label = tk.Label(self.inner_fields_frame_2, text='Filter Columns')
         filter_label.config(font=("Calibri", 12))
         filter_label.pack(side="left");
@@ -135,13 +146,13 @@ class Main(tk.Frame):
         help.pack(side='left')
         search = tk.Button(self.inner_fields_frame_2, text="Search", width = int(config_dict['button_width']), \
                            command=self.search_window)
-        search.pack(side='left')
+        search.pack(side='left', padx=10)
         reset = tk.Button(self.inner_fields_frame_2, text="Reset", width = int(config_dict['button_width']), \
                           command=self.reset)
-        reset.pack(side='left')
+        reset.pack(side='left', padx=10)
         save = tk.Button(self.inner_fields_frame_2, text="Save as CSV", width=int(config_dict['button_width']), \
                           command=self.save_csv)
-        save.pack(side='left')
+        save.pack(side='left', padx=10)
 
     def load_table(self):
         """Loads the table - excel sheet like"""
@@ -177,6 +188,9 @@ class Main(tk.Frame):
                  'The comparison operators you may use include ==, <, > and !=.',
                  'The values should be in single quotes.',
                  'Paranthesis, and, or opertors work.',
+                 'For date comparisons, you can either give date alone or date time.',
+                 'If only date is given, the query considers the default time to be 00:00:00',
+                 'Preferred date format is YYYY-MM-DD HH:MM:SS, though the program will try to infer other valid date formats.',
                  '', 'A few of the examples are:',
                  "date > '2017-01-01' and date < '2018-01-01'",
                  "date == '2015-03-16 10:53:00'",
