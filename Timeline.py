@@ -49,7 +49,7 @@ class Main(tk.Frame):
 
     def init_window(self):
         """Main window initial with just file dialog option"""
-        label = tk.Label(self.master, text='Timeline Highlight')
+        label = tk.Label(self.master, text='Timeline2GUI')
         label.config(font=("Calibri", 16))
         label.pack(side=tk.TOP, anchor="n")
         self.table_frame = None;
@@ -307,7 +307,7 @@ if __name__ == '__main__':
             key_values = row.split('=')
             config_dict[key_values[0]] = key_values[1]
         root.geometry("%dx%d+0+0" % (int(config_dict['window_x']),int(config_dict['window_y'])))
-        title = 'Timeline Highlight'
+        title = 'Timeline2GUI'
         root.title(title)
         app = Main(root)
         app.focus_displayof()
