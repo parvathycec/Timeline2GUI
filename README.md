@@ -25,7 +25,7 @@ All the above-mentioned files should be in one folder.
 
 Command to run the tool in command line:
 
-python Timeline.py
+python Timeline2GUI.py
 
 --------------------
 Configuration.txt
