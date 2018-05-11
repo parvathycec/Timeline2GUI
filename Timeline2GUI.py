@@ -195,21 +195,35 @@ class Main(tk.Frame):
         self.table.model.df = self.table.model.df.reset_index(drop=True)
         self.table.maxcellwidth = int(config_dict['max_cell_width'])
         self.table.show()
+        self.highlight()
 
-        source_webhist_highlight = \
-            self.table.model.df.index[self.table.model.df['source'].astype(str).str.contains('WEBHIST')].tolist()
-        source_lnk_highlight = self.table.model.df.index[self.table.model.df['source'] == 'LNK'].tolist()
-        short_lnk_highlight = \
-            self.table.model.df.index[self.table.model.df['short'].astype(str).str.endswith('.lnk', na=False)].tolist()
-        win_prefetch_highlight = \
-            self.table.model.df.index[self.table.model.df['sourcetype'].str.lower() == 'winprefetch'].tolist()
-        sys_highlight = \
-            self.table.model.df.index[self.table.model.df['short'].astype(str).str.endswith('.sys', na=False)].tolist()
-        self.table.setRowColors(source_webhist_highlight, '#FFC001', 'all')  # using row numbers
-        self.table.setRowColors(source_lnk_highlight, '#92D051', 'all')
-        self.table.setRowColors(short_lnk_highlight, '#92D051',  'all')
-        self.table.setRowColors(win_prefetch_highlight, '#FF0000', 'all')
-        self.table.setRowColors(sys_highlight, '#0070C0', 'all')
+
+    def highlight(self):
+        """Highlights rows based on a text"""
+        hightlights = config_dict['highlights']
+        if hightlights:
+            hightlights = hightlights.split(',')
+        for highlight in hightlights:
+            highlight_options = highlight.split('=')
+            if len(highlight_options) == 3:
+                column = highlight_options[0].strip()
+                search_text = highlight_options[1].strip()
+                highlight_color = highlight_options[2].strip()
+                if column == '*':
+                    for col in self.table.model.df.columns:
+                        highlight = \
+                            self.table.model.df.index[
+                                self.table.model.df[col].astype(str).str.contains(search_text, na=False, case=False)].tolist()
+                        self.table.setRowColors(highlight, highlight_color, 'all')
+                else:
+                    highlight = \
+                        self.table.model.df.index[
+                            self.table.model.df[column].astype(str).str.contains(search_text, na=False, case=False)].tolist()
+                    self.table.setRowColors(highlight, highlight_color, 'all')
+            else:
+                print('Please check your settings for highlight option.')
+                print('This is an example of the format: highlights=*=USB=#FF0000,*=LNK=#EE0000')
+
 
     def help_window(self):
         """Displays a search window box"""
@@ -304,10 +318,10 @@ if __name__ == '__main__':
     else:
         config_dict = {}
         for row in config_file:
-            key_values = row.split('=')
+            key_values = row.split('=', 1)
             config_dict[key_values[0]] = key_values[1]
         root.geometry("%dx%d+0+0" % (int(config_dict['window_x']),int(config_dict['window_y'])))
-        title = 'Timeline2GUI'
+        title = 'Timeline Highlight'
         root.title(title)
         app = Main(root)
         app.focus_displayof()

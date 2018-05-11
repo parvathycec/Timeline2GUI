@@ -7,7 +7,4 @@ search_window_y1=180
 search_window_x2=200
 search_window_y2=160
 max_cell_width=800
-help_window_x1=180
-help_window_y1=180
-help_window_x2=280
-help_window_y2=100
+highlights=*=USB=#add8e6,short=lnk=#FF0000
