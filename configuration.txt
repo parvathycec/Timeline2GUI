@@ -7,4 +7,4 @@ search_window_y1=180
 search_window_x2=200
 search_window_y2=160
 max_cell_width=800
-highlights=*=USB=#add8e6,short=lnk=#FF0000
+highlights=source=WEBHIST=#FFC001,source=LNK=#92D051,short=.lnk=#92D051,sourcetype=winprefetch=#FF0000,short=.sys=#0070C0
