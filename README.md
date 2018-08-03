@@ -1,4 +1,4 @@
-# csvtable
+# Timeline2GUI
 This is a tool to import and view contents of a CSV file.
 The features include filtering the data based on column values, searching for a text, saving the data to a CSV file and highlighting few rows.
 
