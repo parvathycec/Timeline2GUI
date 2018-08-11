@@ -200,29 +200,34 @@ class Main(tk.Frame):
 
     def highlight(self):
         """Highlights rows based on a text"""
-        hightlights = config_dict['highlights']
-        if hightlights:
-            hightlights = hightlights.split(',')
-        for highlight in hightlights:
-            highlight_options = highlight.split('=')
-            if len(highlight_options) == 3:
-                column = highlight_options[0].strip()
-                search_text = highlight_options[1].strip()
-                highlight_color = highlight_options[2].strip()
-                if column == '*':
-                    for col in self.table.model.df.columns:
-                        highlight = \
-                            self.table.model.df.index[
+        try:
+            highlights_file = open("highlights.txt", 'r')
+        except:
+            print("No highlights found!");
+            return; 
+        for row in highlights_file:
+            highlight = row.rstrip('\n').rstrip('\r')
+            if highlight:#To avoid empty rows
+                highlight_options = highlight.split('=')
+                if len(highlight_options) == 3:
+                    column = highlight_options[0].strip()
+                    if column != '*' and column not in self.csv_data.columns.values:
+                        print(column, ' -mentioned in highlights.txt - does not exist')
+                        continue
+                    search_text = highlight_options[1].strip()
+                    highlight_color = highlight_options[2].strip()
+                    if column == '*':
+                        for col in self.table.model.df.columns:
+                            highlight = self.table.model.df.index[\
                                 self.table.model.df[col].astype(str).str.contains(search_text, na=False, case=False)].tolist()
-                        self.table.setRowColors(highlight, highlight_color, 'all')
-                else:
-                    highlight = \
-                        self.table.model.df.index[
+                            self.table.setRowColors(highlight, highlight_color, 'all')
+                    else:
+                        highlight = self.table.model.df.index[\
                             self.table.model.df[column].astype(str).str.contains(search_text, na=False, case=False)].tolist()
                     self.table.setRowColors(highlight, highlight_color, 'all')
-            else:
-                print('Please check your settings for highlight option.')
-                print('This is an example of the format: highlights=*=USB=#FF0000,*=LNK=#EE0000')
+                else:
+                    print('Please check your settings for highlight option.')
+                    print('This is an example of the format: highlights=*=USB=#FF0000,*=LNK=#EE0000')
 
 
     def help_window(self):
@@ -318,13 +323,16 @@ if __name__ == '__main__':
     else:
         config_dict = {}
         for row in config_file:
-            key_values = row.split('=', 1)
-            config_dict[key_values[0]] = key_values[1]
+            row = row.rstrip('\n').rstrip('\r')
+            if row:#To avoid empty rows
+                key_values = row.split('=', 1)
+                #print('key_values ', key_values)
+                key_values[1] = key_values[1].rstrip('\n').rstrip('\r')
+                config_dict[key_values[0]] = key_values[1]
         root.geometry("%dx%d+0+0" % (int(config_dict['window_x']),int(config_dict['window_y'])))
         title = 'Timeline Highlight'
         root.title(title)
         app = Main(root)
         app.focus_displayof()
         app.mainloop()
-
 

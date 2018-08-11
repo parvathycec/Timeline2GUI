@@ -1,0 +1,73 @@
+*=LNK=#92D051
+desc=URL:file:///=#92D051
+short=opened by=#92D051
+short=URL:file///=#92D051
+short=CreateDate=#92D051
+short=visited file://=#92D051
+short=.Ink=#92D051
+desc=.Ink=#92D051
+verison=.Ink=#92D051
+filename=.Ink=#92D051
+short=Recently opened file=#92D051
+desc=file:///=#92D051
+desc=Recently opened file of extension=#92D051
+short=ShellNoRoam/Bags=#92D051
+short=BagMRU=#92D051
+type=File Opened=#92D051
+sourcetype=Shortcut LNK'=#92D051
+sourcetype=RecentDocs key=#92D051
+type=Folder Opened=#92D051
+desc=typed the following cmd=#FF0000
+type=CMD typed=#FF0000
+sourcetype=RunMRU key=#FF0000
+short=RunMRU=#FF0000
+short=UEME_RUNPIDL=#FF0000
+desc=.pf=#FF0000
+type=Last run=#FF0000
+short=MUICache=#FF0000
+source=PRE=#FF0000
+sourcetype=UserAssist key=#FF0000
+type=Time of Launch=#FF0000
+short=UEME_=#FF0000
+sourcetype=Prefetch=#FF0000
+sourcetype=XP Prefetch=#FF0000
+filename=.pf=#FF0000
+short=was executed=#FF0000
+short=.pf=#FF0000
+short=UEME_RUNPATH=#FF0000
+source=Firefox 3 history=#FFC001
+source=WEBHIST=#FFC001
+sourcetype=Internet Explorer=#FFC001
+desc=URL=#FFC001
+type=URL=#FFC001
+desc=http://=#FFC001
+desc=LSO=#FFC001
+type=LSO=#FFC001
+sourcetype=LSO=#FFC001
+sourcetype=Flash Cookie=#FFC001
+source=LSO=#FFC001
+short=visited=#FFC001
+short=URL=#FFC001
+short=Flash Cookie=#FFC001
+sourcetype=Log=#D3D3D3
+sourcetype=XP Firewall Log=#D3D3D3
+sourcetype=LOG=#D3D3D3
+desc=[DELETED]=#000000
+short=RECYCLE=#000000
+desc=RECYCLE=#000000
+version=RECYCLE=#000000
+filename=RECYCLE=#000000
+short=DELETED=#000000
+sourcetype=Deleted Registry=#000000
+sourcetype=$Recycle.bin=#0070C0
+desc=drive mounted=#0070C0
+type=Drive last mounted=#0070C0
+short=drive mounted=#0070C0
+sourcetype=SetupAPI Log=#0070C0
+short=RemovableMedia=#0070C0
+short=USB=#0070C0
+short=/USB/Vid_=#0070C0
+short=STORAGE/RemovableMedia=#0070C0
+short=Enum/USBSTOR/Disk&Ven_=#0070C0
+short=volume mounted=#0070C0
+sourcetype=MountPoints2 key=#0070C0
