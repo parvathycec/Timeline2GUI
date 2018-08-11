@@ -69,4 +69,5 @@ Third option is the color hex code, give the hex code of the color you want to h
 For Example:
 
 *=USB=#add8e6
+
 short=lnk=#FF0000
