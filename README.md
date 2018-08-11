@@ -55,7 +55,7 @@ highlights.txt
 ------------------
 Add all highlights you need here
 
-You can give multiple highlight option, each seperated by a line break
+You can give multiple highlight option, each seperated by a new line
 
 In each highlight, there are 3 parts separated by =
 
