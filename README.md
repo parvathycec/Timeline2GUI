@@ -54,13 +54,20 @@ max_cell_width=800# length of each cell in the table
 highlights.txt
 ------------------
 Add all highlights you need here
+
 You can give multiple highlight option, each seperated by a line break
+
 In each highlight, there are 3 parts separated by =
+
 first part can be the column name (ex:short here) or * to indicate all columns
 second part is the text (to be searched for highlighting, ex: USB)
+
 The search is case insensitive
+
 Third option is the color hex code, give the hex code of the color you want to highlight the row
+
 *=USB=#add8e6
+
 short=lnk=#FF0000
 
 
