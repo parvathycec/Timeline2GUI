@@ -209,27 +209,41 @@ class Main(tk.Frame):
             highlight = row.rstrip('\n').rstrip('\r')
             if highlight:#To avoid empty rows
                 highlight_options = highlight.split('=')
-                if len(highlight_options) == 3:
+                if len(highlight_options) == 4:
                     column = highlight_options[0].strip()
                     if column != '*' and column not in self.csv_data.columns.values:
                         print(column, ' -mentioned in highlights.txt - does not exist')
                         continue
-                    search_text = highlight_options[1].strip()
-                    highlight_color = highlight_options[2].strip()
+                    search_text = highlight_options[2].strip()
+                    highlight_color = highlight_options[3].strip()
                     if column == '*':
                         for col in self.table.model.df.columns:
-                            highlight = self.table.model.df.index[\
-                                self.table.model.df[col].astype(str).str.contains(search_text, na=False, case=False)].tolist()
-                            self.table.setRowColors(highlight, highlight_color, 'all')
+                            highlight = self.str_compare(highlight_options[1], col, search_text)
+                            if highlight:
+                                self.table.setRowColors(highlight, highlight_color, 'all')
                     else:
-                        highlight = self.table.model.df.index[\
-                            self.table.model.df[column].astype(str).str.contains(search_text, na=False, case=False)].tolist()
-                    self.table.setRowColors(highlight, highlight_color, 'all')
+                        highlight = self.str_compare(highlight_options[1], column, search_text)
+                        if highlight:
+                            self.table.setRowColors(highlight, highlight_color, 'all')
                 else:
                     print('Please check your settings for highlight option.')
-                    print('This is an example of the format: highlights=*=USB=#FF0000,*=LNK=#EE0000')
+                    print('This is an example of the format: *=CONTAINS=USB=#FF0000,*=ENDS=LNK=#EE0000')
 
-
+    def str_compare(self, compare_type, column, search_text):
+        """Performs the kind of string compare as configured in highlights.txt"""
+        if compare_type.upper() == 'ENDS':
+            return self.table.model.df.index[\
+                            self.table.model.df[column].astype(str).str.lower().astype(str).str.endswith(search_text.lower(), na=False)].tolist()
+        elif compare_type.upper() == 'STARTS':
+            return self.table.model.df.index[\
+                            self.table.model.df[column].astype(str).str.lower().astype(str).str.startswith(search_text.lower(), na=False)].tolist()
+        elif compare_type.upper() == 'EQUALS':
+            return self.table.model.df.index[\
+                            self.table.model.df[column].astype(str).str.lower() == search_text.lower()].tolist()
+        elif compare_type.upper() == 'CONTAINS':
+            return self.table.model.df.index[\
+                            self.table.model.df[column].astype(str).str.contains(search_text, na=False, case=False)].tolist()
+                            
     def help_window(self):
         """Displays a search window box"""
         lines = ['You may enter the query to filter the data based on column names.',\
