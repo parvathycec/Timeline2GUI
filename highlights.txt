@@ -1,7 +1,7 @@
-*=CONTAINS=LNK=#92D051
+*=EQUALS=LNK=#92D051
 desc=CONTAINS=URL:file:///=#92D051
 short=CONTAINS=opened by=#92D051
-short=CONTAINS=URL:file///=#92D051
+short=STARTS=URL:file///=#92D051
 short=CONTAINS=CreateDate=#92D051
 short=CONTAINS=visited file://=#92D051
 short=CONTAINS=.Ink=#92D051
@@ -9,15 +9,15 @@ desc=CONTAINS=.Ink=#92D051
 version=CONTAINS=.Ink=#92D051
 filename=CONTAINS=.Ink=#92D051
 short=CONTAINS=Recently opened file=#92D051
-desc=CONTAINS=file:///=#92D051
-desc=CONTAINS=Recently opened file of extension=#92D051
+desc=STARTS=file:///=#92D051
+desc=STARTS=Recently opened file of extension=#92D051
 short=CONTAINS=ShellNoRoam/Bags=#92D051
 short=CONTAINS=BagMRU=#92D051
 type=CONTAINS=File Opened=#92D051
 sourcetype=CONTAINS=Shortcut LNK'=#92D051
-sourcetype=CONTAINS=RecentDocs key=#92D051
+sourcetype=EQUAL=RecentDocs key=#92D051
 type=CONTAINS=Folder Opened=#92D051
-desc=CONTAINS=typed the following cmd=#FF0000
+desc=STARTS=typed the following cmd=#FF0000
 type=CONTAINS=CMD typed=#FF0000
 sourcetype=CONTAINS=RunMRU key=#FF0000
 short=CONTAINS=RunMRU=#FF0000
@@ -25,20 +25,20 @@ short=CONTAINS=UEME_RUNPIDL=#FF0000
 desc=CONTAINS=.pf=#FF0000
 type=CONTAINS=Last run=#FF0000
 short=CONTAINS=MUICache=#FF0000
-source=CONTAINS=PRE=#FF0000
-sourcetype=CONTAINS=UserAssist key=#FF0000
-type=CONTAINS=Time of Launch=#FF0000
+source=EQUALS=PRE=#FF0000
+sourcetype=EQUALS=UserAssist key=#FF0000
+type=EQUALS=Time of Launch=#FF0000
 short=CONTAINS=UEME_=#FF0000
 sourcetype=CONTAINS=Prefetch=#FF0000
-sourcetype=CONTAINS=XP Prefetch=#FF0000
+sourcetype=EQUALS=XP Prefetch=#FF0000
 filename=CONTAINS=.pf=#FF0000
 short=CONTAINS=was executed=#FF0000
 short=CONTAINS=.pf=#FF0000
 short=CONTAINS=UEME_RUNPATH=#FF0000
 source=CONTAINS=Firefox 3 history=#FFC001
-source=CONTAINS=WEBHIST=#FFC001
-sourcetype=CONTAINS=Internet Explorer=#FFC001
-desc=CONTAINS=URL=#FFC001
+source=EQUALS=WEBHIST=#FFC001
+sourcetype=EQUALS=Internet Explorer=#FFC001
+desc=STARTS=URL=#FFC001
 type=CONTAINS=URL=#FFC001
 desc=CONTAINS=http://=#FFC001
 desc=CONTAINS=LSO=#FFC001
@@ -48,21 +48,21 @@ sourcetype=CONTAINS=Flash Cookie=#FFC001
 source=CONTAINS=LSO=#FFC001
 short=CONTAINS=visited=#FFC001
 short=CONTAINS=URL=#FFC001
-short=CONTAINS=Flash Cookie=#FFC001
+short=STARTS=Flash Cookie=#FFC001
 sourcetype=CONTAINS=Log=#D3D3D3
 sourcetype=CONTAINS=XP Firewall Log=#D3D3D3
-sourcetype=CONTAINS=LOG=#D3D3D3
-desc=CONTAINS=[DELETED]=#000000
-short=CONTAINS=RECYCLE=#000000
-desc=CONTAINS=RECYCLE=#000000
-version=CONTAINS=RECYCLE=#000000
-filename=CONTAINS=RECYCLE=#000000
-short=CONTAINS=DELETED=#000000
-sourcetype=CONTAINS=Deleted Registry=#000000
-sourcetype=CONTAINS=$Recycle.bin=#0070C0
-desc=CONTAINS=drive mounted=#0070C0
+source=CONTAINS=LOG=#D3D3D3
+desc=BEGINS=[DELETED]=#ff00ff
+short=CONTAINS=RECYCLE=#ff00ff
+desc=CONTAINS=RECYCLE=#ff00ff
+version=CONTAINS=RECYCLE=#ff00ff
+filename=CONTAINS=RECYCLE=#ff00ff
+short=CONTAINS=DELETED=#ff00ff
+sourcetype=EQUALS=Deleted Registry=#ff00ff
+sourcetype=EQUALS=$Recycle.bin=#0070C0
+desc=ENDS=drive mounted=#0070C0
 type=CONTAINS=Drive last mounted=#0070C0
-short=CONTAINS=drive mounted=#0070C0
+short=ENDS=drive mounted=#0070C0
 sourcetype=CONTAINS=SetupAPI Log=#0070C0
 short=CONTAINS=RemovableMedia=#0070C0
 short=CONTAINS=USB=#0070C0
@@ -70,4 +70,4 @@ short=CONTAINS=/USB/Vid_=#0070C0
 short=CONTAINS=STORAGE/RemovableMedia=#0070C0
 short=CONTAINS=Enum/USBSTOR/Disk&Ven_=#0070C0
 short=CONTAINS=volume mounted=#0070C0
-sourcetype=CONTAINS=MountPoints2 key=#0070C0
+sourcetype=EQUALS=MountPoints2 key=#0070C0
