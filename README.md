@@ -6,8 +6,9 @@ The features include filtering the data based on column values, searching for a 
 Requirements:
 -------------------------
 Python 3.6
-
-Pandastable (development version)
+Numpy
+Pandas
+Pandastable
 
 -----------------------
 Installation
@@ -16,13 +17,11 @@ Installation
 How to install?
 
 Download the Timeline2GUI repo. 
-
-Run the following command from command line.
+Run the following command from command line inside the Timeline2GUI folder.
 
 pip install -r requirements.txt
 
 This command should automatically install all the dependencies.
-
 If you face any issue with installation, run the following command in the command line.
 
 python -m pip install -e git://github.com/dmnfarrell/pandastable.git@pandastable#egg=pandastable
