@@ -19,7 +19,7 @@ Download the Timeline2GUI repo.
 
 Run the following command from command line.
 
-python setup.py install
+pip install -r requirements.txt
 
 This command should automatically install all the dependencies.
 
