@@ -6,9 +6,8 @@ The features include filtering the data based on column values, searching for a 
 Requirements:
 -------------------------
 Python 3.6
-Numpy
-Pandas
-Pandastable
+
+Pip
 
 -----------------------
 Installation
@@ -22,6 +21,19 @@ Run the following command from command line inside the Timeline2GUI folder.
 pip install -r requirements.txt
 
 This command should automatically install all the dependencies.
+
+-------------------------
+Dependencies: (will be automatically installed on running pip install -r requirements.txt)
+-------------------------
+Numpy
+
+Pandas
+
+Pandastable
+
+-----------------------
+Run
+-----------------------
 
 Command to run the tool in command line:
 
