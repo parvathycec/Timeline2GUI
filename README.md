@@ -22,10 +22,6 @@ Run the following command from command line inside the Timeline2GUI folder.
 pip install -r requirements.txt
 
 This command should automatically install all the dependencies.
-If you face any issue with installation, run the following command in the command line.
-
-python -m pip install -e git://github.com/dmnfarrell/pandastable.git@pandastable#egg=pandastable
-
 
 Command to run the tool in command line:
 
