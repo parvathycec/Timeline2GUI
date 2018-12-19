@@ -4,6 +4,7 @@ import numpy as np
 import os
 import pandas as pd
 import shlex
+from tkinter import ttk
 
 class MyTable(Table):
     """Customized Table for sorting ascending and descending"""
@@ -16,6 +17,12 @@ class MyTable(Table):
         """Set up sort order dict based on currently selected field"""
         super().sortTable(ascending=self.ascending)
         self.ascending = 1 - self.ascending
+		
+    def handle_left_click(self, event):
+        """Example - override left click"""
+        Table.handle_left_click(self, event)
+        print('HEREEEE ', event);
+        return
 
 class Input:
     """Input box frame on the top"""
@@ -53,12 +60,14 @@ class Main(tk.Frame):
         label.config(font=("Calibri", 16))
         label.pack(side=tk.TOP, anchor="n")
         self.table_frame = None;
+        self.tabControl = None;
         self.inner_fields_frame_2 = None;
         self.inner_fields_frame_1 = None;
         self.input_label_frame = None;
         self.csv_data = None;
         self.show_data = None;
         self.current_data = None;
+        self.reduced_data = None;
         self.input_label_frame = tk.LabelFrame(self.master, text="Input Data")
         self.input_label_frame.config(font=("Calibri", 14))
         self.input_label_frame.pack(side=tk.TOP, anchor="n", fill="x", \
@@ -93,10 +102,14 @@ class Main(tk.Frame):
         if self.table_frame is not None:
             print('destroyed');
             self.table_frame.destroy();
+        
+        if self.tabControl is not None:
+            self.tabControl.destroy();
         self.show_loading();
         self.master.update();
         self.csv_data = None;
         self.current_data = None;
+        self.reduced_data = None;
         try:
             self.csv_data = pd.read_csv(self.__file_name, low_memory=False)
             self.csv_data['date'] = pd.to_datetime((self.csv_data['date'] + " " + \
@@ -135,6 +148,7 @@ class Main(tk.Frame):
         #if self.csv_data is not None:
         #    self.current_data = self.csv_data;
         self.current_data = None;
+        self.reduced_data = None;
         self.hide_loading();
         if self.inner_fields_frame_2 is not None:
             self.load_btns()
@@ -143,6 +157,8 @@ class Main(tk.Frame):
         if self.table_frame is not None:
             print('destroyed');
             self.table_frame.destroy();
+        if self.tabControl is not None:
+            self.tabControl.destroy();
         if self.inner_fields_frame_2 is not None:
             self.inner_fields_frame_2.destroy();
         if self.show_data is not None:
@@ -188,14 +204,36 @@ class Main(tk.Frame):
         if self.current_data is None or len(self.current_data) == 0:
             tk.messagebox.showerror(message="No data to show!");
             return;
-        self.table_frame = tk.Frame(self.master)
+        self.tabControl = ttk.Notebook(self.master)          # Create Tab Control
+        #tab 1 is reduced view, tab 2 is detailed view
+        tab1 = ttk.Frame(self.tabControl)            # Create a tab 
+        self.tabControl.add(tab1, text='Reduced View')      # Add the tab
+        #tabControl.pack(expand=1, fill="both")  # Pack to make visible
+		
+        tab2 = ttk.Frame(self.tabControl)            # Create a tab 
+        self.tabControl.add(tab2, text='Detailed View')      # Add the tab
+        self.tabControl.pack(expand=1, fill="both")  # Pack to make visible
+        self.table_frame = tk.Frame(tab2)
         self.table_frame.config();
         self.table_frame.pack(anchor="c", fill=tk.BOTH, expand="YES")
+        self.current_data = self.current_data.reset_index(drop=True);
         self.table = MyTable(self.table_frame, self.current_data);
-        self.table.model.df = self.table.model.df.reset_index(drop=True)
+        #self.table.model.df = self.table.model.df.reset_index(drop=True)
         self.table.maxcellwidth = int(config_dict['max_cell_width'])
         self.table.show()
-        self.highlight()
+		
+        self.highlight();
+
+        self.table_frame1 = tk.Frame(tab1)
+        self.table_frame1.config();
+        self.table_frame1.pack(anchor="c", fill=tk.BOTH, expand="YES")
+        self.table1 = MyTable(self.table_frame1, self.reduced_data);
+        self.table1.model.df = self.table1.model.df.reset_index(drop=False)
+        self.table1.maxcellwidth = int(config_dict['max_cell_width'])
+        self.table1.show();
+        self.highlight_reduced();
+		
+        
 
 
     def highlight(self):
@@ -205,6 +243,7 @@ class Main(tk.Frame):
         except:
             print("No highlights found!");
             return; 
+        row_indixes = [];
         for row in highlights_file:
             highlight = row.rstrip('\n').rstrip('\r')
             if highlight:#To avoid empty rows
@@ -218,31 +257,65 @@ class Main(tk.Frame):
                     highlight_color = highlight_options[3].strip()
                     if column == '*':
                         for col in self.table.model.df.columns:
-                            highlight = self.str_compare(highlight_options[1], col, search_text)
+                            highlight = self.str_compare(self.table, highlight_options[1], col, search_text)
                             if highlight:
-                                self.table.setRowColors(highlight, highlight_color, 'all')
+                                self.table.setRowColors(highlight, highlight_color, 'all');row_indixes.extend(highlight);
                     else:
-                        highlight = self.str_compare(highlight_options[1], column, search_text)
+                        highlight = self.str_compare(self.table, highlight_options[1], column, search_text);
                         if highlight:
-                            self.table.setRowColors(highlight, highlight_color, 'all')
+                            self.table.setRowColors(highlight, highlight_color, 'all');row_indixes.extend(highlight);
+                else:
+                    print('Please check your settings for highlight option.')
+                    print('This is an example of the format: *=CONTAINS=USB=#FF0000,*=ENDS=LNK=#EE0000')
+        self.reduced_data = self.current_data.iloc[sorted(set(row_indixes))];
+        #self.reduced_data = self.reduced_data.reset_index(drop=True);
+
+    def highlight_reduced(self):
+        """Highlights rows based on a text in reduced view"""
+        try:
+            highlights_file = open("highlights.txt", 'r')
+        except:
+            print("No highlights found!");
+            return; 
+        for row in highlights_file:
+            highlight = row.rstrip('\n').rstrip('\r')
+            if highlight:#To avoid empty rows
+                highlight_options = highlight.split('=')
+                if len(highlight_options) == 4:
+                    column = highlight_options[0].strip()
+                    if column != '*' and column not in self.reduced_data.columns.values:
+                        print(column, ' -mentioned in highlights.txt - does not exist')
+                        continue
+                    search_text = highlight_options[2].strip()
+                    highlight_color = highlight_options[3].strip()
+                    if column == '*':
+                        for col in self.table1.model.df.columns:
+                            highlight = self.str_compare(self.table1, highlight_options[1], col, search_text)
+                            if highlight and len(highlight) > 0:
+                                self.table1.setRowColors(highlight, highlight_color, 'all');
+                    else:
+                        highlight = self.str_compare(self.table1, highlight_options[1], column, search_text);
+                        if highlight and len(highlight) > 0:
+                            self.table1.setRowColors(highlight, highlight_color, 'all');
                 else:
                     print('Please check your settings for highlight option.')
                     print('This is an example of the format: *=CONTAINS=USB=#FF0000,*=ENDS=LNK=#EE0000')
 
-    def str_compare(self, compare_type, column, search_text):
+    
+    def str_compare(self, table_model, compare_type, column, search_text):
         """Performs the kind of string compare as configured in highlights.txt"""
         if compare_type.upper() == 'ENDS':
-            return self.table.model.df.index[\
-                            self.table.model.df[column].astype(str).str.lower().astype(str).str.endswith(search_text.lower(), na=False)].tolist()
+            return table_model.model.df.index[\
+                            table_model.model.df[column].astype(str).str.lower().astype(str).str.endswith(search_text.lower(), na=False)].tolist()
         elif compare_type.upper() == 'STARTS':
-            return self.table.model.df.index[\
-                            self.table.model.df[column].astype(str).str.lower().astype(str).str.startswith(search_text.lower(), na=False)].tolist()
+            return table_model.model.df.index[\
+                            table_model.model.df[column].astype(str).str.lower().astype(str).str.startswith(search_text.lower(), na=False)].tolist()
         elif compare_type.upper() == 'EQUALS':
-            return self.table.model.df.index[\
-                            self.table.model.df[column].astype(str).str.lower() == search_text.lower()].tolist()
+            return table_model.model.df.index[\
+                            table_model.model.df[column].astype(str).str.lower() == search_text.lower()].tolist()
         elif compare_type.upper() == 'CONTAINS':
-            return self.table.model.df.index[\
-                            self.table.model.df[column].astype(str).str.contains(search_text, na=False, case=False)].tolist()
+            return table_model.model.df.index[\
+                            table_model.model.df[column].astype(str).str.contains(search_text, na=False, case=False)].tolist()
                             
     def help_window(self):
         """Displays a search window box"""
@@ -294,6 +367,8 @@ class Main(tk.Frame):
             return;
         if self.table_frame:
             self.table_frame.destroy();
+        if self.tabControl:
+            self.tabControl.destroy();
         self.show_loading();
         self.master.update();
         self.search_win.destroy();
@@ -324,11 +399,32 @@ class Main(tk.Frame):
             self.hide_loading();
             self.load_table();
 
+def get_reduced_data(self, query):
+        """Get data in reduced view - those that are highlighted"""
+        #if query == '':
+        #    tk.messagebox.showerror(message="Empty query!");
+        #    return;
+        #if self.table_frame:
+        #    self.table_frame.destroy()
+        #self.show_loading();
+        #self.master.update();
+        #print('Query : ', query);
+        try:
+            if query != '':
+                self.current_data = self.csv_data.query(query)
+        except Exception as e:
+            self.hide_loading();
+            print('Exception ', e)
+            tk.messagebox.showerror(message="Check your query!");
+        else:
+            self.hide_loading();
+            self.load_table();
 
 
 if __name__ == '__main__':
     root = tk.Tk()
     root.resizable(0,0)
+	
     try:
         config_file = open("configuration.txt", 'r')
     except:
