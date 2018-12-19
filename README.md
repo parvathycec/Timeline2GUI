@@ -1,6 +1,7 @@
 # Timeline2GUI
-This is a tool to import and view contents of a CSV file.
+This is a tool to import and view contents of Timeline CSV file.
 The features include filtering the data based on column values, searching for a text, saving the data to a CSV file and highlighting few rows.
+There are two views avaiable, detailed and reduced view. Detailed view display all the rows in the CSV file, while reduced view display only the important (highlighted) rows.
 
 -------------------------
 Requirements:
